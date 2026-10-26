@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}MedTrack{% endblock %}</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2.0.6/css/pico.min.css">
+</head>
+<body>
+  <header class="container">
+    <nav>
+      <ul><li><strong><a href="{% url 'product-list' %}">MedTrack</a></strong></li></ul>
+      <ul>
+        {% if user.is_authenticated %}
+          <li>{{ user.username }}</li>
+          <li>
+            <form method="post" action="{% url 'logout' %}">
+              {% csrf_token %}
+              <button type="submit" class="secondary outline">Log out</button>
+            </form>
+          </li>
+        {% else %}
+          <li><a href="{% url 'login' %}">Log in</a></li>
+          <li><a href="{% url 'signup' %}">Sign up</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+    {% for message in messages %}
+      <article><small>{{ message }}</small></article>
+    {% endfor %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>
